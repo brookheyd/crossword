@@ -1,0 +1,198 @@
+<style>
+tr, td 
+{
+    border: 1px solid black;
+	padding: 0px;
+}
+input
+{	
+	box-sizing: border-box;
+}
+</style>
+
+<script>
+var colems;
+var side;
+var rows;
+var level =[];
+var x;
+var boxes;
+var numberOfInputs = 0;
+var qNum = ['thenumberone.png','thenumber2.png','thenumberthree.png','thenumberfour.png','thenumberfive.png',
+			'thenumbersix.png','thenumberseven.png','thenumbereight.png','thenumbernine.png','thenumberten.png',
+			'thenumbereleven.png','thenumbertwelve.png', 'thenumberthirteen.png','thenumberfourteen.png','thenumberfifteen.png']
+function create()
+{
+	rows = document.getElementById('rows').value;
+	colems = document.getElementById('colems').value;
+	boxes = eval("rows * colems");
+	for(i=0;i<rows;i++)
+	{
+		document.getElementsByTagName("table")[0].innerHTML += '<tr> </tr>';
+	}
+	for(i=0;i<rows;i++)
+	{
+		
+		for(j=0;j<colems;j++)
+		{
+			document.getElementsByTagName("tr")[i].innerHTML += '<td> </td>';
+		}
+	}
+	for(i=0;i<boxes;i++)
+	{
+		document.getElementsByTagName("td")[i].setAttribute("id", i);
+	}
+	for(i=0;i<boxes;i++)
+	{
+		document.getElementById(i).innerHTML = 
+		'<input type="text" style=" height:60px ; width:60px ; font-size:25pt; text-align: center;" maxlength="1"/>';
+	}
+	document.getElementById('start').innerHTML = '';
+	document.getElementById('makecrossword').style.display='';
+}
+function makecrossword()
+{
+	for(i=0; i<boxes ; i++)
+	{
+		if(document.getElementById(i).getElementsByTagName("input")[0].value)
+		{
+			x = document.getElementById(i).getElementsByTagName("input")[0].value;
+		}	
+		else
+		{
+			x = 0;
+		}
+		level.push(x);		
+	}
+	//document.getElementById('test').innerHTML += level;	
+	for(i=0;i<level.length;i++)
+	{
+		
+		
+		if(level[i])
+		{
+			document.getElementById(i).innerHTML = 
+			'<input type="text" style=" height:60px ; width:60px ; font-size:25pt; text-align: center;" maxlength="1"/>';
+			numberOfInputs++;
+		}
+		else
+		{
+			document.getElementById(i).style.border= 'none';
+			document.getElementById(i).style.backgroundColor = '000000';
+			document.getElementById(i).innerHTML = '';
+		}
+	}
+	o = 0;
+	
+	for(i=0;i<boxes;i++)
+	{
+		side = eval(i%colems);
+			if(i==0)
+			{
+				document.getElementById(i).getElementsByTagName("input")[0].style.background = 'url('+ qNum[o] +') no-repeat';
+				o++;
+			}
+			else if(document.getElementById(i).innerHTML != ''  && document.getElementById(i-1).innerHTML=='')
+			{
+				try
+				{
+				if(document.getElementById(i+1).innerHTML=='')
+				{
+				document.getElementById(i).getElementsByTagName("input")[0].style.background = 'url('+ qNum[o] +') no-repeat';
+				o++;
+				}
+				}
+				catch(err)
+				{
+				if(i==boxes)
+				{
+				document.getElementById(i).getElementsByTagName("input")[0].style.background = 'url('+ qNum[o] +') no-repeat';
+				o++;
+				}
+				}
+			}
+			else if(document.getElementById(i).innerHTML != '')
+			{
+			try
+			{
+			if(document.getElementById(i-colems).innerHTML != ''){
+				document.getElementById(i).getElementsByTagName("input")[0].style.background = 'url('+ qNum[o] +') no-repeat';
+				o++;}
+			}
+		
+			catch(err)
+			{
+			document.getElementById(i).getElementsByTagName("input")[0].style.background = 'url('+ qNum[o] +') no-repeat';
+				o++;
+			}
+			}
+			else if(side == 0)
+			{
+				document.getElementById(i).getElementsByTagName("input")[0].style.background = 'url('+ qNum[o] +') no-repeat';
+				o++;
+			}
+		
+		
+		
+		
+		
+	}
+	
+	
+	document.getElementById('check').removeAttribute('hidden');
+	document.getElementById('hint').removeAttribute('hidden');
+	document.getElementById('makecrossword').style.display = 'none';
+}
+function check()
+{
+	
+	var win=0;
+	for(i=0;i<level.length;i++)
+	{
+		try
+		{
+			correct = document.getElementsByTagName("input")[win].value;
+			if(level[i] == correct)  
+			{
+				win++;
+			}
+		}
+		catch(err){}
+	}
+	if(win == numberOfInputs)
+	{
+		alert('win');
+	}
+}
+function hint()
+{
+	x =  Math.floor((Math.random() * boxes));
+	if( level[x] && document.getElementById(x).getElementsByTagName("input")[0].value != level[x] )
+	{
+		document.getElementById(x).getElementsByTagName("input")[0].value = level[x];
+	}
+	else
+	{
+		hint();
+	}
+}
+</script>
+<div id='start'>
+<input id='rows' type= 'text' style=' width : 60' placeholder='rows'/>
+<input id='colems' type= 'text' style=' width : 60' placeholder='colems'/>
+<br>
+<input type='button' onClick="create()" value= 'create table'/>
+</div>
+
+<table id='crossword' cellspacing='0'>
+</table>
+<input id='makecrossword' style='display:none;' type='button' onClick="makecrossword()" value= 'finish'/>
+<input id= 'check' hidden type='button' onClick="check()" value= 'check'/>
+<input id='hint' type="button" hidden value='hint' size = '1' onClick='hint()'/>
+<p id='test' >  </p>
+
+
+
+
+
+

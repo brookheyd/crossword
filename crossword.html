@@ -1,0 +1,139 @@
+<head>
+<style>
+tr ,td 
+{
+    border: 1px solid black;
+	padding: 0px;
+}
+input
+{	
+	box-sizing: border-box;
+}
+
+</style>
+</head>
+
+<script>
+var g = 0;
+var number = 1;
+var every = [];
+var levelOne =[
+   , ,'b', ,'o', , , ,'c',
+'a', ,'a', ,'r', , , ,'h',
+'p','i','n','e','a','p','p','l','e',
+'p', ,'a', ,'n', , , ,'r',
+'l', ,'n', ,'g', , , ,'r',
+'e', ,'a', ,'e', , , ,'y'
+];
+function makeTable()
+{	
+	
+	for(i=0;i<6;i++)
+	{
+		document.getElementsByTagName("table")[0].innerHTML += '<tr> </tr>';
+	}
+	for(i=0;i<6;i++)
+	{
+		
+		for(j=0;j<9;j++)
+		{
+			document.getElementsByTagName("tr")[i].innerHTML += '<td> </td>';
+		}
+	}
+	for(i=0;i<54;i++)
+	{
+		document.getElementsByTagName("td")[i].setAttribute("id", i);
+	}
+	/*for(i=0;i<54;i++)
+	{
+		document.getElementById(i).innerHTML = levelOne[i];
+	}
+	for(i=0;i<54;i++)
+	{	
+		document.getElementById(i).innerHTML = '';
+	}*/
+	
+	
+	
+	for(i=0;i<levelOne.length;i++)
+	{
+		
+		
+		if(levelOne[i])
+		{
+			document.getElementById(i).innerHTML = 
+			'<input type="text" style=" height:60px ; width:60px ; font-size:25pt; text-align: center;" maxlength="1"/>';
+		}
+		else
+		{
+			document.getElementById(i).style.border= 'none';
+			document.getElementById(i).style.backgroundColor = '000000';
+			document.getElementById(i).innerHTML = '';
+		}
+	}
+	
+	document.getElementsByTagName("input")[0].style.background = "url('thenumberone.png') no-repeat";
+	document.getElementsByTagName("input")[1].style.background = "url('thenumber2.png') no-repeat";
+	document.getElementsByTagName("input")[2].style.background = "url('thenumberthree.png') no-repeat";
+	document.getElementsByTagName("input")[3].style.background = "url('thenumberfour.png') no-repeat";
+	document.getElementsByTagName("input")[7].style.background = "url('thenumberfive.png') no-repeat";
+}
+function check()
+{
+	
+	var win=0;
+	for(i=0;i<levelOne.length;i++)
+	{
+		try
+		{
+			correct = document.getElementsByTagName("input")[win].value;
+			if(levelOne[i] == correct)  
+			{
+				win++;
+			}
+		}
+		catch(err){}
+	}
+	if(win == 28)
+	{
+		alert('win');
+	}
+}
+function hint()
+{
+	x =  Math.floor((Math.random() * 54));
+	if( levelOne[x] && document.getElementById(x).getElementsByTagName("input")[0].value != levelOne[x] )
+	{
+		document.getElementById(x).getElementsByTagName("input")[0].value = levelOne[x];
+	}
+	else
+	{
+		hint();
+	}
+}
+</script>
+<body onload = 'makeTable()'>
+<p id = 'testingparagraph'></p>
+
+<table cellspacing='0'>
+</table>
+<input type="button" value='check' size = '1' onClick='check()'/>
+<input type="button" value='hint' size = '1' onClick='hint()'/>
+
+<table cellspacing='10' rules='cols'>
+<tr>
+<th align='left'>
+<p> down </p> 
+<p>1) going crazy ; going ____</p>
+<p>2) tropicana</p>
+<p>3) ____ bomb</p>
+<p>4) samsung is better</P>
+</th>
+<th align='left' valign='top'>
+<p>across</p>
+<p>5) rly?...on pizza?</p>
+</th>
+</table>
+<br>
+<a href ='makeyourowncrossword.html'>make your own crossword</a>
+</body>
